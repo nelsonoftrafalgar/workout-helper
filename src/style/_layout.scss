@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Convergence&family=Lato:wght@300;400;700;900&family=Mukta:wght@300;400;600;700;800&family=Noto+Sans:wght@400;700&display=swap');
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Convergence', sans-serif;
+	background-color: $background;
+}
+
+.app {
+	height: 100vh;
+}
+
+.button {
+	background-color: $light;
+	border-radius: $radius;
+	padding: 10px 15px;
+	color: $background;
+}
+
+.remove-button {
+	background: none;
+	color: $light;
+	font-size: 2rem;
+}

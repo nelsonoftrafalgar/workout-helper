@@ -32,20 +32,22 @@ const Timer: FC<IProps> = ({ sequence }) => {
 	}, [active, seconds])
 
 	return (
-		<div className='timer-container'>
+		<>
 			{step === sequence.length ? (
-				<span>Done!</span>
+				<div className='d-flex align-items-center justify-content-center h-100'>
+					<span className='done'>Done!</span>
+				</div>
 			) : (
-				<>
-					<span>To go: {sequence.length - step}</span>
-					<span className='timer-sequence'>{sequence[step].count}</span>
-					<span className='timer-counter'>{seconds}</span>
-					<button className='timer-toggle-button' onClick={() => setActive(!active)}>
+				<div className='d-flex flex-column align-items-center justify-content-between h-100'>
+					<span className='timer-to-go'>To go: {sequence.length - step}</span>
+					<span className='timer-sequence px-5'>{sequence[step].count}</span>
+					<span className='timer-counter'>{seconds} s</span>
+					<button className='button' onClick={() => setActive(!active)}>
 						{active ? 'Pause' : 'Start'}
 					</button>
-				</>
+				</div>
 			)}
-		</div>
+		</>
 	)
 }
 

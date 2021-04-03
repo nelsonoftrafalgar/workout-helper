@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from 'react'
+import { Col, Row } from 'react-bootstrap'
 
+import Input from './components/Input'
 import Timer from './Timer'
 
 export interface ISequence {
@@ -24,44 +26,44 @@ const Setup = () => {
 	}
 
 	return (
-		<>
+		<div className='py-5 d-flex flex-column align-items-center w-100'>
 			{submitted ? (
 				<Timer sequence={sequence} />
 			) : (
-				<div className='setup-container'>
+				<>
 					{sequence.map(({ id, interval, count }) => (
-						<div key={id}>
-							<input
-								className='setup-input'
-								value={count}
-								type='text'
-								placeholder='count'
-								name='count'
-								onChange={handleChange(id)}
-							/>
-							<input
-								className='setup-input'
-								value={interval}
-								type='text'
-								placeholder='interval'
-								name='interval'
-								onChange={handleChange(id)}
-							/>
-							<button onClick={handleRemove(id)}>X</button>
-						</div>
+						<Row className='w-100 mb-3' key={id}>
+							<Col xs='5'>
+								<Input value={count} name='count' onChange={handleChange(id)} />
+							</Col>
+							<Col xs='5'>
+								<Input value={interval} name='interval' onChange={handleChange(id)} />
+							</Col>
+							<Col xs='2'>
+								<div className='h-100 d-flex align-items-center justify-content-center'>
+									<button className='remove-button' onClick={handleRemove(id)}>
+										&#x2716;
+									</button>
+								</div>
+							</Col>
+						</Row>
 					))}
-					<button
-						className='setup-add-button'
-						onClick={() => setSequence([...sequence, { id: Date.now(), count: '', interval: '' }])}
-					>
-						Add sequence
-					</button>
-					<button className='setup-submit-button' onClick={() => setSubmitted(true)}>
-						Submit
-					</button>
-				</div>
+					<div className='d-flex'>
+						<button
+							className='button mx-3'
+							onClick={() =>
+								setSequence([...sequence, { id: Date.now(), count: '', interval: '' }])
+							}
+						>
+							Add sequence
+						</button>
+						<button className='button mx-3' onClick={() => setSubmitted(true)}>
+							Submit
+						</button>
+					</div>
+				</>
 			)}
-		</>
+		</div>
 	)
 }
 

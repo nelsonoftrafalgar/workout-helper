@@ -2,7 +2,7 @@ import Setup from './Setup'
 
 function App() {
 	return (
-		<div>
+		<div className='app d-flex justify-content-center container'>
 			<Setup />
 		</div>
 	)
