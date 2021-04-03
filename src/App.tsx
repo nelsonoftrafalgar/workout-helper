@@ -1,9 +1,9 @@
-import Timer from './Timer'
+import Setup from './Setup'
 
 function App() {
 	return (
 		<div>
-			<Timer />
+			<Setup />
 		</div>
 	)
 }

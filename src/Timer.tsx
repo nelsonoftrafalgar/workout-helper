@@ -1,15 +1,19 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
-import { sequence } from './sequence'
+import { ISequence } from './Setup'
 
-const Timer = () => {
+interface IProps {
+	sequence: ISequence[]
+}
+
+const Timer: FC<IProps> = ({ sequence }) => {
 	const [step, setStep] = useState(0)
-	const [seconds, setSeconds] = useState(sequence[step].break)
+	const [seconds, setSeconds] = useState(+sequence[0].interval)
 	const [active, setActive] = useState(false)
 
 	useEffect(() => {
-		setSeconds(sequence[step].break)
-	}, [step])
+		if (step < sequence.length) setSeconds(+sequence[step].interval)
+	}, [step, sequence])
 
 	useEffect(() => {
 		let timer: number = 0
@@ -29,11 +33,18 @@ const Timer = () => {
 
 	return (
 		<div className='timer-container'>
-			<span className='timer-sequence'>{sequence[step].count}</span>
-			<span className='timer-counter'>{seconds}</span>
-			<button className='timer-toggle-button' onClick={() => setActive(!active)}>
-				{active ? 'Pause' : 'Start'}
-			</button>
+			{step === sequence.length ? (
+				<span>Done!</span>
+			) : (
+				<>
+					<span>To go: {sequence.length - step}</span>
+					<span className='timer-sequence'>{sequence[step].count}</span>
+					<span className='timer-counter'>{seconds}</span>
+					<button className='timer-toggle-button' onClick={() => setActive(!active)}>
+						{active ? 'Pause' : 'Start'}
+					</button>
+				</>
+			)}
 		</div>
 	)
 }

@@ -1,46 +1,67 @@
 import { ChangeEvent, useState } from 'react'
 
-const Setup = () => {
-	const [sequence, setSequence] = useState<Array<Record<string, string>>>([
-		{ count: '', break: '' },
-	])
+import Timer from './Timer'
 
-	const handleChange = (idx: number) => (e: ChangeEvent<HTMLInputElement>) => {
+export interface ISequence {
+	id: number
+	count: string
+	interval: string
+}
+
+const Setup = () => {
+	const [sequence, setSequence] = useState<ISequence[]>([{ id: 0, count: '', interval: '' }])
+	const [submitted, setSubmitted] = useState(false)
+
+	const handleChange = (id: number) => (e: ChangeEvent<HTMLInputElement>) => {
 		const { value, name } = e.currentTarget
-		const currentSequence: Record<string, string> = { ...sequence[idx] }
-		currentSequence[name] = value
-		setSequence(sequence.map((el, i) => (i === idx ? currentSequence : el)))
+		const currentSequence = sequence.find((item) => item.id === id)!!
+		setSequence(sequence.map((el) => (el.id === id ? { ...currentSequence, [name]: value } : el)))
+	}
+
+	const handleRemove = (id: number) => () => {
+		const newSequence = sequence.filter((item) => item.id !== id)
+		setSequence(newSequence)
 	}
 
 	return (
-		<div className='setup-container'>
-			{sequence.map((item, idx) => (
-				<div key={idx}>
-					<input
-						className='setup-input'
-						value={item.count}
-						type='text'
-						placeholder='count'
-						name='count'
-						onChange={handleChange(idx)}
-					/>
-					<input
-						className='setup-input'
-						value={item.break}
-						type='text'
-						placeholder='break'
-						name='break'
-						onChange={handleChange(idx)}
-					/>
+		<>
+			{submitted ? (
+				<Timer sequence={sequence} />
+			) : (
+				<div className='setup-container'>
+					{sequence.map(({ id, interval, count }) => (
+						<div key={id}>
+							<input
+								className='setup-input'
+								value={count}
+								type='text'
+								placeholder='count'
+								name='count'
+								onChange={handleChange(id)}
+							/>
+							<input
+								className='setup-input'
+								value={interval}
+								type='text'
+								placeholder='interval'
+								name='interval'
+								onChange={handleChange(id)}
+							/>
+							<button onClick={handleRemove(id)}>X</button>
+						</div>
+					))}
+					<button
+						className='setup-add-button'
+						onClick={() => setSequence([...sequence, { id: Date.now(), count: '', interval: '' }])}
+					>
+						Add sequence
+					</button>
+					<button className='setup-submit-button' onClick={() => setSubmitted(true)}>
+						Submit
+					</button>
 				</div>
-			))}
-			<button
-				className='setup-add-button'
-				onClick={() => setSequence([...sequence, { count: '', break: '' }])}
-			>
-				Add sequence
-			</button>
-		</div>
+			)}
+		</>
 	)
 }
 
