@@ -18,13 +18,13 @@ const Timer: FC<IProps> = ({ sequence }) => {
 	useEffect(() => {
 		let timer: number = 0
 
-		if (active) timer = window.setInterval(() => setSeconds((seconds) => seconds - 1), 1000)
-		else clearInterval(timer)
-
 		if (active && seconds < 0) {
 			setStep((step) => step + 1)
 			setActive(false)
 		}
+
+		if (active) timer = window.setInterval(() => setSeconds((seconds) => seconds - 1), 1000)
+		else clearInterval(timer)
 
 		return () => {
 			clearInterval(timer)
